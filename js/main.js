@@ -17,6 +17,25 @@
 			}
 		  });
 		});
+
+        // Add event listener to each button remove # from link
+        const buttons = document.querySelectorAll('button[data-target]'); 
+
+        buttons.forEach(button => {
+          button.addEventListener('click', (event) => {
+            event.preventDefault(); 
+            const targetId = button.getAttribute('data-target'); 
+            const targetElement = document.getElementById(targetId);
+        
+            if (targetElement) {
+              history.pushState(null, null, ''); 
+              window.scrollTo({ 
+                top: targetElement.offsetTop, 
+                behavior: 'smooth' 
+              });
+            }
+          });
+        });
         // animation and observer code remains unchanged
         const observerOptions = {
             root: null,
