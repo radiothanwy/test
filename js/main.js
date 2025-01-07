@@ -1,22 +1,39 @@
         // Define currentLang in the global scope
         let currentLang = 'en';
 		// remove # from link 
-		const navLinks = document.querySelectorAll('nav a');
-
-		navLinks.forEach(link => {
-		  link.addEventListener('click', (event) => {
-			event.preventDefault();
-			const targetId = link.getAttribute('href').substring(1); 
-			const targetElement = document.getElementById(targetId);
-			if (targetElement) {
-			  history.pushState(null, null, ''); // Push a new state without URL change
-			  window.scrollTo({ 
-				top: targetElement.offsetTop,
-				behavior: 'smooth' 
-			  });
-			}
-		  });
-		});
+        // Function to remove '#' from href and handle smooth scrolling
+        function handleInternalLinks(e) {
+            const href = this.getAttribute('href');
+            if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const targetId = href.substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+                // Update URL without adding '#' to the address bar
+                history.pushState(null, '', window.location.pathname);
+            }
+            }
+        }
+        
+        // Function to update language
+        function updateLanguage(lang) {
+            document.querySelectorAll('[class*="lang-"]').forEach(el => {
+            el.style.display = 'none';
+            });
+            document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+            el.style.display = '';
+            });
+            document.querySelector('.language-switch').setAttribute('data-lang', lang === 'en' ? 'ar' : 'en');
+            document.querySelector('.lang-text').textContent = lang === 'en' ? 'عربي' : 'English';
+        }
+        
+        // Add event listeners when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle internal links for all elements with href attribute
+            document.querySelectorAll('a[href^="#"], button[href^="#"]').forEach(el => {
+            el.addEventListener('click', handleInternalLinks);
+            });
 
         // Add event listener to each button remove # from link
         const buttons = document.querySelectorAll('button[data-target]'); 
@@ -321,4 +338,4 @@
             console.log('Form submitted:', data);
             alert('Message sent successfully!');
             contactForm.reset();
-        });
+        })});
