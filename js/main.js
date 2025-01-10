@@ -296,7 +296,7 @@
                 }
             }).then(response => {
                 if (response.ok) {
-                    alert('Thank you for your submission!');
+                    alert('Thank you for your subssion!');
                     this.reset();
                 } else {
                     alert('Oops! Something went wrong.');
